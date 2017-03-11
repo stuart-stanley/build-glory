@@ -1,0 +1,11 @@
+---
+# Setup lights build env
+
+- hosts: all
+  tasks:
+    - name: build-essientials
+      apt: name=build-essential update_cache=yes
+
+    - name: scons
+      apt: name=scons
+

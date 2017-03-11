@@ -1,0 +1,6 @@
+[submodule "lights/rpi_ws281x"]
+	path = lights/rpi_ws281x
+	url = https://github.com/jgarff/rpi_ws281x
+[submodule "lights/openpixelcontrol"]
+	path = lights/openpixelcontrol
+	url = https://github.com/stuart-stanley/openpixelcontrol.git
