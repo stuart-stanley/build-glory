@@ -117,16 +117,24 @@ class BannerDisplayElement(BaseDisplayElement):
         length = self.width * self.height
         super(BannerDisplayElement, self).__init__('banner', name, start, length)
 
-    def set_pixel(self, x, y, color, allow_oob=False):
-        #print x, y, color
+    def set_xy_pixel(self, x, y, color, allow_oob=False):
         if x < 0 or x >= self.width or y < 0 or y>= self.height:
             assert allow_oob, \
                 'Attempt to write location {},{} outside 0..{}, 0..{}'.format(
                     x, y, self.width, self.height)
             # outside of display. Just ignore
             return
-        inx = self.width * y + x
-        super(BannerDisplayElement, self).set_pixel(inx, color)
+        inx = self.height * x
+        #print "inx=", inx,
+        if x % 2 == 0:
+            #print "add-even", y,
+            inx += y
+        else:
+            #print "add-odd", self.height, y, self.height - y,
+            inx += (self.height - y - 1)
+
+        #print "final_inx", inx, color
+        self.set_pixel(inx, color)
 
     def set_char(self, char, col_num, row_num=0, color=None, background=None):
         if char not in _DIGIT_VALUES:
@@ -142,6 +150,7 @@ class BannerDisplayElement(BaseDisplayElement):
         for col_offset in range(0, len(bits)):
             col = col_num + col_offset
             cdata = bits[col_offset]
+            #print "col", col_offset, col, cdata
             for row_offset in range(0, 8):
                 row = row_num + row_offset
                 rmask = 1 << row_offset
@@ -149,8 +158,8 @@ class BannerDisplayElement(BaseDisplayElement):
                     use_color = color
                 else:
                     use_color = background
-                #print row, col, use_color
-                self.set_pixel(col, row, use_color, allow_oob=True)
+                #print "  row", col, row_offset, row, rmask, use_color,
+                self.set_xy_pixel(col, row, use_color, allow_oob=True)
 
     def scroll_text(self, color=None):
         sc = (0 - self.__scroll_inx) / self.font_width

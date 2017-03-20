@@ -27,6 +27,7 @@ class LayoutHandler(object):
         self.__display_elements = disp_objs
 
         self.__figure_start_ordered()
+        self.__last_pixels = None
 
     def __figure_start_ordered(self):
         dec = copy.copy(self.__display_elements)
@@ -77,12 +78,25 @@ class LayoutHandler(object):
         element = self.__check_element(element_name, 'concentric_rings')
         return element
 
+    def get_raw_space(self):
+        element = self.__check_element('raw', 'strand')
+        return element
+        
+
     def render(self, opc_client):
         send_pixels = [(0,0,0)]  # gl_server bug??!?!?
+        send_pixels = []
         for de in self.__ordered_elements:
             send_pixels.extend(de.pixel_buffer)
         opc_client.put_pixels(send_pixels)
-
+        #if self.__last_pixels is not None:
+        #    dcnt = 0
+        #    for inx in range(len(send_pixels)):
+        #        if send_pixels[inx] != self.__last_pixels[inx]:
+        #            dcnt += 1
+        #    print "delta", dcnt
+        #self.__last_pixels = send_pixels
+                             
 
 
 
