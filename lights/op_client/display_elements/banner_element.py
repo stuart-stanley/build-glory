@@ -189,9 +189,9 @@ class BannerDisplayElement(BaseDisplayElement):
             self.__last_scroll += self.__scroll_rate
             lst = ct - self.__last_scroll
 
-        if scount > 1:
-            print "WARNING: had to jump scroll {} {}s intervals".format(
-                scount, self.__scroll_rate)
+        # if scount > 1:
+        #     print "WARNING: had to jump scroll {} {}s intervals".format(
+        #         scount, self.__scroll_rate)
 
 
     def set_scroll_text(self, text, scroll_rate=10):
