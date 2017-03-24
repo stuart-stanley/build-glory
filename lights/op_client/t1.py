@@ -8,7 +8,7 @@ from visual_algos.bar_graph import BarGrapher
 import subprocess
 
 
-def random_color(mv=64):
+def random_color(mv=10):
     r = random.randint(0,mv)
     g = random.randint(0,mv)
     b = random.randint(0,mv)
@@ -22,7 +22,7 @@ def bar_cb():
     on os-x: CPU usage: 10.93% user, 23.43% sys, 65.62% idle
 
     """
-    return random_color(100)
+    return random_color(120)
     top_data = subprocess.check_output(['top', '-n', '0', '-l', '1'])
     retx = r'''(?P<user>\d+.\d+)%\s+user,\s+
                (?P<sys>\d+.\d+)%\s+sys,\s+
@@ -44,7 +44,7 @@ s1_bar = BarGrapher(s1, bar_cb)
 c1_throb = Throbber(c1)
 client = opc.Client('localhost:7890')
 #b1.set_char('C', 0, 0)
-b1.set_scroll_text('love you')
+b1.set_scroll_text('IloveDELL')
 bx = 0
 by = 0
 lx = 0
@@ -67,9 +67,10 @@ while True:
             print "WARNING: proced for {} but sleep is only {}".format(ran_time, sleep_base_interval)
         else:
             #time.sleep(sleep_base_interval - ran_time)
+            time.sleep(0.1)
             pass
     elif what == 'tick':
-        w = (255,255,255)
+        w = (64,64,64)
         b = (0,0,0)
         x = 0
         run_list = [b1, s1, s2, c1]

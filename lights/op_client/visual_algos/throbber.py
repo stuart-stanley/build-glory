@@ -18,7 +18,7 @@ class Throbber(object):
         rads = ((center_px + pixel) % n_pixels) / float(n_pixels) * math.pi * 2
         cv = math.cos(rads)
         band_mult = math.cos(tick * self.__background_hum[cname])
-        v = color_utils.remap((cv * band_mult), -1, 1, 0, 256)
+        v = color_utils.remap((cv * band_mult), -1, 1, 0, 10)
         return v
 
     def tick(self):

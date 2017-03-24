@@ -1,7 +1,7 @@
 import time
 
 class BarGrapher(object):
-    def __init__(self, display_element, data_cb, data_max=None, rate=10):
+    def __init__(self, display_element, data_cb, data_max=None, rate=0.5):
         self.__display_element = display_element
         self.__data_cb = data_cb
         self.__rate = 1.0 / rate  # in updates per second
@@ -19,7 +19,7 @@ class BarGrapher(object):
 
     def __figure_color(self, pinx, scaled_size):
         if pinx < scaled_size:
-            c = int((255.0 / scaled_size) * pinx)
+            c = int((64.0 / scaled_size) * pinx)
         else:
             c = 0
         return c
