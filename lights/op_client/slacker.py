@@ -30,6 +30,7 @@ class _AStatus(object):
         else:
             for line in event['text'].split('\n'):
                 line_key, line_data = line.split(':', 1)
+                line_data = line_data.strip()
                 if line_key == 'Name':
                     base_info['name'] = line_data
                 elif line_key == 'Phase':
@@ -53,8 +54,14 @@ class _AStatus(object):
         return False
 
     @property
-    def is_runng(self):
+    def is_running(self):
         if self.phase == 'STARTED':
+            return True
+        return False
+
+    @property
+    def is_completed(self):
+        if self.phase == 'COMPLETED':
             return True
         return False
 
@@ -80,7 +87,7 @@ class _AStatus(object):
     def panel_text(self):
         if self.is_unknown:
             what = 'UNKNOWN'
-        elif self.is_runng:
+        elif self.is_running:
             what = 'running'
         elif self.is_success:
             what = 'YAY!'
@@ -136,7 +143,9 @@ class SlackJenkinsWatcher(object):
         ns = None
         for event in read_data:
             if event['type'] == 'message' and event['channel'] == self.__chanid:
+                print(event, self.__chanid)
                 try_ns = _AStatus(event)
+                print(" aaanddd try_ns name is '{}'".format(try_ns.name))
                 if try_ns.name == 'MasterCI':
                     ns = try_ns
         if ns is None:
@@ -146,7 +155,7 @@ class SlackJenkinsWatcher(object):
                 self.__last_status.was_updated = False
             ns = self.__last_status
         else:
-            log.info('Status has changed! {}'.format(ns))
+            logs.info('Status has changed! {}'.format(ns))
         self.__last_status = ns
         return ns
 

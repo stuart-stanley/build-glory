@@ -31,10 +31,13 @@ b1.set_scroll_text('loading')
 slack_client = SlackJenkinsWatcher()
 
 cl = 10
+# todo: something is wrong here. This is being taken as G, R, B!!!
 unknown_color = (cl, cl, cl)
 running_color = (0, 0, cl)
-failed_color = (cl, 0, 0)
-success_color = (0, cl, 0)
+failed_color = (0, cl, 0)
+to_fail_color = (0, cl, cl)
+success_color = (cl, 0, 0)
+to_success_color = (cl, 0, cl)
 use_color = unknown_color
 
 
@@ -48,9 +51,14 @@ while True:
             use_color = running_color
         elif current_status.is_failed:
             use_color = failed_color
+        elif current_status.is_completed:
+            if current_status.status == 'SUCCESS':
+                use_color = to_success_color
+            else:
+                use_color = to_fail_color
         else:
             assert current_status.is_success, \
-                'not unknown, not running, not failed. why was it not success!!!'
+                'not unknown, not running, not completed, and not failed. why was it not success!!!'
             use_color = success_color
     start_proc_time = time.time()
     b1.tick(use_color)
