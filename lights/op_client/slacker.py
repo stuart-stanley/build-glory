@@ -28,7 +28,12 @@ class _AStatus(object):
             base_info['phase'] = 'UNKNOWN'
             base_info['status'] = 'UNKNOWN'
         else:
-            for line in event['text'].split('\n'):
+            if 'text' in event:
+                lines = event['text'].split('\n')
+            else:
+                lines = []
+
+            for line in lines:
                 line_key, line_data = line.split(':', 1)
                 line_data = line_data.strip()
                 if line_key == 'Name':
